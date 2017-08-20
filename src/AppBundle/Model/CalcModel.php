@@ -57,6 +57,8 @@ class CalcModel
             $date2 = $year . '-' . $endMonth . '-' . 13;
         }
 
+        $date1 .= ' 00:00:00';
+        $date2 .= ' 23:59:59';
 
         $userId = $umbrellaClient->getMyUser()['id'];
         $fromTimeStamp = (new DateTime($date1))->getTimestamp();
@@ -77,13 +79,12 @@ class CalcModel
         // replace this example code with whatever you need
         return [
             'price'=>$price,
-            'start_date'=>$date1,
-            'end_date'=>$date2,
+            'priceDelta'=>$priceNeeded-$price,
+            'date'=>$date1 . '-' . $date2,
             'duration'=>$duration,
             'durationInHours'=>$duration/60,
             'workedDays'=>$needDays,
             'priceExcected'=>$priceNeeded,
-            'priceDelta'=>$priceNeeded-$price,
             'workMinuteDelta'=>$needDays * 60 * 8 - $duration,
             'workHourDelta'=>$needDays * 8  - $duration/60,
         ];
