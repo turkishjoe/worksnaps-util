@@ -23,7 +23,8 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         "makarenko/worksnaps-bundle": "dev-master",
-        "shaygan/telegram-bot-api-bundle": "@dev"
+        "shaygan/telegram-bot-api-bundle": "@dev",
+        "symfony-bundles/redis-bundle": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

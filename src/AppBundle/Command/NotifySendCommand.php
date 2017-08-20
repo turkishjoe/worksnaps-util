@@ -8,6 +8,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use TelegramBot\Api\Types\Message;
+use TelegramBot\Api\Types\Update;
 
 class NotifySendCommand extends ContainerAwareCommand
 {
@@ -16,21 +18,81 @@ class NotifySendCommand extends ContainerAwareCommand
         $this
             ->setName('app:notify')
             ->setDescription('...')
-            ->addArgument('argument', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option', null, InputOption::VALUE_NONE, 'Option description')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $argument = $input->getArgument('argument');
+        /**
+         * @var \SymfonyBundles\RedisBundle\Service\Client $redis
+         */
+        $redis = $this->getContainer()->get('sb_redis.client.default');
+        /**
+         * @var \Shaygan\TelegramBotApiBundle\TelegramBotApi  $api
+         */
+        $api = $this->getContainer()->get('shaygan.telegram_bot_api');
 
-        if ($input->getOption('option')) {
-            // ...
+        /**
+         * @var Update[] $updates
+         */
+        $updates = $api->getApiBot()->getUpdates();
+
+        foreach($updates as $update)
+        {
+            /**
+             * @var Message $message
+             */
+            $message = $update->getMessage();
+            $userId = $message->getFrom()->getId();
+
+            if($userId != $this->getContainer()->getParameter('my_user_id'))
+            {
+                $output->writeln('Sorry it is private bot. Please delete it');
+            }
+            else
+            {
+                $key = $this->getRedisKey($api, $userId);
+                $isWrite = false;
+                $keys = $redis->keys($key);
+                if(!empty($keys[0]) && count($keys) == 1)
+                {
+                    $redisData = json_decode($redis->get($keys[0]), true);
+
+                    if(empty($redisData['time']) || $redisData['time'] < $message->getDate() && $message->getText(
+                        ) == '/get'
+                    )
+                    {
+                        $isWrite = true;
+                    }
+                }
+                else if(empty($keys))
+                {
+                    $isWrite = true;
+                }
+                else
+                {
+                    //TODO:LOG ERROR
+                }
+
+                if($isWrite)
+                {
+                    $this->writeToRedis($key, $message->getDate());
+                    $api->getApiBot()->sendMessage($userId, $this->prepareData());
+                }
+            }
         }
 
+        $output->writeln('Ok');
+    }
+
+    protected function send()
+    {
+
+    }
+
+    protected function prepareData()
+    {
         $data = (new CalcModel())->calc($this->getContainer()->get('umbrella.worksnaps'));
-        $api = $this->getContainer()->get('shaygan.telegram_bot_api');
 
         $str = '';
 
@@ -39,8 +101,38 @@ class NotifySendCommand extends ContainerAwareCommand
             $str .= $key . '=' . $value . PHP_EOL;
         }
 
-        $api->getApiBot()->sendMessage(67197900, $str);
-        $output->writeln('Command result.');
+
+        return $str;
     }
 
+    /**
+     * TODO:Add your description
+     *
+     * @param $key
+     * @param $date
+     *
+     * @return $this
+     */
+    protected function writeToRedis($key, $date)
+    {
+        $data = [
+            'time'=>$date,
+        ];
+
+        $this->getContainer()->get('sb_redis.client.default')->set($key, json_encode($data));
+        return $this;
+    }
+
+    /**
+     * TODO:Add your description
+     *
+     * @param $api
+     * @param $userId
+     *
+     * @return string
+     */
+    protected function getRedisKey($api, $userId)
+    {
+        return $this->getContainer()->getParameter('redis_prefix'). $api->getApiBot()->getMe()->getId() . '_' . $userId;
+    }
 }

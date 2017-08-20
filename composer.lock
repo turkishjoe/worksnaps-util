@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "13d2d097bd80b4e2eb9ead1a4e01d980",
+    "content-hash": "522bb32d92fde3d8b718f00f6aa8636b",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1372,6 +1372,56 @@
             "time": "2017-03-13T16:27:32+00:00"
         },
         {
+            "name": "predis/predis",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis.git",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/nrk/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "time": "2016-06-16T16:22:20+00:00"
+        },
+        {
             "name": "psr/http-message",
             "version": "1.0.1",
             "source": {
@@ -1739,6 +1789,62 @@
                 "mailer"
             ],
             "time": "2017-05-01T15:54:03+00:00"
+        },
+        {
+            "name": "symfony-bundles/redis-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony-bundles/redis-bundle.git",
+                "reference": "4f45dd639e5c9cee0a53b847efc91e98f08b16f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony-bundles/redis-bundle/zipball/4f45dd639e5c9cee0a53b847efc91e98f08b16f6",
+                "reference": "4f45dd639e5c9cee0a53b847efc91e98f08b16f6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6",
+                "predis/predis": "~1.0",
+                "symfony/framework-bundle": "~2.7|~3.0"
+            },
+            "require-dev": {
+                "phpunit/php-code-coverage": "^3.3.0",
+                "phpunit/phpunit": "^5.3"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SymfonyBundles\\RedisBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Khaperets",
+                    "email": "khaperets@gmail.com"
+                }
+            ],
+            "description": "Symfony Redis Bundle",
+            "homepage": "https://github.com/symfony-bundles/redis-bundle",
+            "keywords": [
+                "bundle",
+                "redis",
+                "symfony"
+            ],
+            "time": "2017-04-04 12:47:30"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -2749,7 +2855,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "makarenko/worksnaps-bundle": 20,
-        "shaygan/telegram-bot-api-bundle": 20
+        "shaygan/telegram-bot-api-bundle": 20,
+        "symfony-bundles/redis-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
