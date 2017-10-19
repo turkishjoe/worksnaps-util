@@ -39,10 +39,23 @@ class NotifySendCommand extends ContainerAwareCommand
 
         foreach($updates as $update)
         {
+
             /**
              * @var Message $message
              */
             $message = $update->getMessage();
+
+            if(is_null($message))
+            {
+                $message = $update->getEditedMessage();
+
+                if(!is_null($message))
+                {
+                    continue;
+                }
+            }
+
+
             $userId = $message->getFrom()->getId();
 
             if($userId != $this->getContainer()->getParameter('my_user_id'))
