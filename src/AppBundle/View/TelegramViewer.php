@@ -60,8 +60,8 @@ class TelegramViewer
     {
         return [
             'price'=>$workModel->getPrice(),
-            'start_date'=>$workModel->getStartDate(),
-            'end_date'=>$workModel->getEndDate(),
+            'start_date'=>$workModel->getStartDate()->format('Y-m-d H:i:s'),
+            'end_date'=>$workModel->getEndDate()->format('Y-m-d H:i:s'),
             'duration'=>$workModel->getDuration(),
             'durationInHours'=>$workModel->getDuration()/60,
             'workedDays'=>$workModel->getNeedDays(),
