@@ -46,7 +46,7 @@ class WorkMonitoringService
      * @param integer $projectId
      * @param float $salary
      */
-    public function __construct(WorksnapsService $umbrellaClient, $projectId, $salary)
+    public function __construct(WorksnapsService $umbrellaClient)
     {
         $this->umbrellaClient = $umbrellaClient;
     }

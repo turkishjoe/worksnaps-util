@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\View\TelegramViewer;
+namespace AppBundle\View;
 use AppBundle\Model\WorkInfoModel;
 use Shaygan\TelegramBotApiBundle\TelegramBotApi;
 

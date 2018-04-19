@@ -17,11 +17,8 @@ class NotifySendCommand extends ContainerAwareCommand
         $this
             ->setName('app:notify')
             ->setDescription('Telegram command cron')
-            ->addArgument('telegramChatId', InputArgument::REQUIRED, 'Telegram chat Id')
             ->addArgument('projectId', InputArgument::REQUIRED, 'Worksnaps project Id')
             ->addArgument('salary', InputArgument::REQUIRED, 'Salary ')
-            ->addArgument('startDate', InputArgument::REQUIRED, 'Start Date(YYYY-mm-dd)')
-            ->addArgument('endDate', InputArgument::REQUIRED, 'End Date(YYYY-mm-dd)');
         ;
     }
 
@@ -38,14 +35,9 @@ class NotifySendCommand extends ContainerAwareCommand
         /**
          * @var TelegramViewer $telegramViewer
          */
-        $telegramViewer = $this->getContainer()->get('app.view.telegram_viewer');
+        $telegramManager = $this->getContainer()->get('app.model.telegram_manager');
 
-        $workModel = $monitoringService->getSalaryInfo(
-            $input->getArgument('startDate'),
-            $input->getArgument('endDate')
-        );
-
-        $telegramViewer->sendWorkModel($input->getArgument('telegramChatId'), $workModel);
+        $telegramManager->processUpdates();
     }
 
 }

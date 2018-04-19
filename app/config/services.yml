@@ -8,6 +8,10 @@ services:
         class: AppBundle\Model\WorkMonitoringService
         arguments: ["@umbrella.worksnaps"]
 
+    app.model.telegram_manager:
+        class: AppBundle\Model\TelegramManager
+        arguments: ["@app.model.work_monitoring_service", "@app.view.telegram_viewer", "@shaygan.telegram_bot_api", "@sb_redis.client.default", "%my_user_id%", "%redis_prefix%"]
+
     app.view.telegram_viewer:
         class: AppBundle\View\TelegramViewer
-        arguments: ["shaygan.telegram_bot_api"]
+        arguments: ["@shaygan.telegram_bot_api"]
