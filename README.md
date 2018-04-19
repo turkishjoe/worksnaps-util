@@ -1,8 +1,9 @@
-worksnaps_old
+worksnaps
 =============
 
-A Symfony project created on March 5, 2017, 4:21 pm.
+This is simple tool for get info about earned money in some period
+to telegram bot.
 
 Note
 1. Before ```composer update``` use ```composer dump-autoload -o```
-2. app/console notify:send {projectId} {salary}
+2. Add To cron app/console notify:send {projectId} {salary}
