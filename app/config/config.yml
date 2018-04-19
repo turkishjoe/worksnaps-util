@@ -70,3 +70,16 @@ worksnaps:
 
 shaygan_telegram_bot_api:
     token: "%telegram_bot_token%"
+
+sb_redis:
+    class:
+        client:  "SymfonyBundles\RedisBundle\Service\Client"
+        factory: "SymfonyBundles\RedisBundle\Service\Factory"
+    clients:
+        default:
+            # container alias for service, defaults name for this client: sb_redis.client.default
+            alias:      ~
+            # client options
+            options:    []
+            # connection parameters
+            parameters: []

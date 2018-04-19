@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Umbrella\WorksnapsBundle\WorksnapsBundle(),
             new Shaygan\TelegramBotApiBundle\ShayganTelegramBotApiBundle(),
+            new SymfonyBundles\RedisBundle\SymfonyBundlesRedisBundle(),
             new AppBundle\AppBundle()
         );
 
