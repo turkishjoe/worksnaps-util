@@ -4,6 +4,10 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.model.work_monitoring_service:
+        class: AppBundle\Model\WorkMonitoringService
+        arguments: ["@umbrella.worksnaps"]
+
+    app.view.telegram_viewer:
+        class: AppBundle\View\TelegramViewer
+        arguments: ["shaygan.telegram_bot_api"]

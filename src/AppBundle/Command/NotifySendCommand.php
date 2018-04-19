@@ -2,7 +2,8 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Model\CalcModel;
+use AppBundle\Model\WorkMonitoringService;
+use AppBundle\View\TelegramViewer\TelegramViewer;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,32 +16,36 @@ class NotifySendCommand extends ContainerAwareCommand
     {
         $this
             ->setName('app:notify')
-            ->setDescription('...')
-            ->addArgument('argument', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option', null, InputOption::VALUE_NONE, 'Option description')
+            ->setDescription('Telegram command cron')
+            ->addArgument('telegramChatId', InputArgument::REQUIRED, 'Telegram chat Id')
+            ->addArgument('projectId', InputArgument::REQUIRED, 'Worksnaps project Id')
+            ->addArgument('salary', InputArgument::REQUIRED, 'Salary ')
+            ->addArgument('startDate', InputArgument::REQUIRED, 'Start Date(YYYY-mm-dd)')
+            ->addArgument('endDate', InputArgument::REQUIRED, 'End Date(YYYY-mm-dd)');
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $argument = $input->getArgument('argument');
+        /**
+         * @var WorkMonitoringService $monitoringService
+         */
+        $monitoringService = $this->getContainer()->get('app.model.work_monitoring_service');
 
-        if ($input->getOption('option')) {
-            // ...
-        }
+        $monitoringService->setProjectId($input->getArgument('projectId'))
+                          ->setSalary($input->getArgument('salary'));
 
-        $data = (new CalcModel())->calc($this->getContainer()->get('umbrella.worksnaps'));
-        $api = $this->getContainer()->get('shaygan.telegram_bot_api');
+        /**
+         * @var TelegramViewer $telegramViewer
+         */
+        $telegramViewer = $this->getContainer()->get('app.view.telegram_viewer');
 
-        $str = '';
+        $workModel = $monitoringService->getSalaryInfo(
+            $input->getArgument('startDate'),
+            $input->getArgument('endDate')
+        );
 
-        foreach ($data as $key=>$value)
-        {
-            $str .= $key . '=' . $value . PHP_EOL;
-        }
-
-        $api->getApiBot()->sendMessage(67197900, $str);
-        $output->writeln('Command result.');
+        $telegramViewer->sendWorkModel($input->getArgument('telegramChatId'), $workModel);
     }
 
 }
